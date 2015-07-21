@@ -24,6 +24,11 @@ set(PNGLIB_VERSION ${PNGLIB_MAJOR}.${PNGLIB_MINOR}.${PNGLIB_RELEASE})
 find_package(ZLIB REQUIRED)
 include_directories(${ZLIB_INCLUDE_DIR})
 
+if (CMAKE_VERSION VERSION_GREATER 3.0.0 OR CMAKE_VERSION VERSION_EQUAL 3.0.0)
+  # Disallow use of the LOCATION target property
+  cmake_policy (SET CMP0026 OLD)
+endif ()
+
 if(NOT WIN32)
   find_library(M_LIBRARY
     NAMES m
