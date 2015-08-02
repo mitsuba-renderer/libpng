@@ -56,7 +56,7 @@ option(PNGARG        "Disable ANSI-C prototypes" OFF)
 set(PNG_LIB_NAME png${PNGLIB_MAJOR}${PNGLIB_MINOR})
 
 # to distinguish between debug and release lib
-set(CMAKE_DEBUG_POSTFIX "d")
+#set(CMAKE_DEBUG_POSTFIX "d")
 
 # Use the prebuilt pnglibconf.h file from the scripts folder
 # TODO: fix this by building with awk; without this no cmake build can be
@@ -292,7 +292,7 @@ elseif(CMAKE_MAJOR_VERSION GREATER 2) # future proof
 endif()
 
 # INSTALL
-if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL )
+if(NOT PNG_SKIP_INSTALL_LIBRARIES AND NOT PNG_SKIP_INSTALL_ALL )
   install(TARGETS ${PNG_LIB_TARGETS}
       ${PNG_EXPORT_RULE}
       RUNTIME DESTINATION bin
@@ -327,11 +327,11 @@ if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL )
  endif()
 endif()
 
-if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL )
+if(NOT PNG_SKIP_INSTALL_HEADERS AND NOT PNG_SKIP_INSTALL_ALL )
   install(FILES ${libpng_public_hdrs}   DESTINATION include)
   install(FILES ${libpng_public_hdrs}   DESTINATION include/${PNGLIB_NAME})
 endif()
-if(NOT SKIP_INSTALL_EXECUTABLES AND NOT SKIP_INSTALL_ALL )
+if(NOT PNG_SKIP_INSTALL_EXECUTABLES AND NOT PNG_SKIP_INSTALL_ALL )
   if(NOT WIN32 OR CYGWIN OR MINGW)
     install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/libpng-config DESTINATION bin)
     install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${PNGLIB_NAME}-config
@@ -339,7 +339,7 @@ if(NOT SKIP_INSTALL_EXECUTABLES AND NOT SKIP_INSTALL_ALL )
   endif(NOT WIN32 OR CYGWIN OR MINGW)
 endif()
 
-if(NOT SKIP_INSTALL_FILES AND NOT SKIP_INSTALL_ALL )
+if(NOT PNG_SKIP_INSTALL_FILES AND NOT PNG_SKIP_INSTALL_ALL )
   # Install man pages
   if(NOT PNG_MAN_DIR)
     set(PNG_MAN_DIR "share/man")
@@ -361,7 +361,7 @@ endif()
 
 # On versions of CMake that support it, create an export file CMake
 # users can include() to import our targets
-if(PNG_EXPORT_RULE AND NOT SKIP_INSTALL_EXPORT AND NOT SKIP_INSTALL_ALL )
+if(PNG_EXPORT_RULE AND NOT PNG_SKIP_INSTALL_EXPORT AND NOT PNG_SKIP_INSTALL_ALL )
   install(EXPORT libpng DESTINATION lib/libpng FILE lib${PNG_LIB_NAME}.cmake)
 endif()
 
