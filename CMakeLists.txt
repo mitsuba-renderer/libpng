@@ -21,7 +21,9 @@ set(PNGLIB_NAME libpng${PNGLIB_MAJOR}${PNGLIB_MINOR})
 set(PNGLIB_VERSION ${PNGLIB_MAJOR}.${PNGLIB_MINOR}.${PNGLIB_RELEASE})
 
 # needed packages
-find_package(ZLIB REQUIRED)
+if (NOT TARGET zlib)
+  find_package(ZLIB REQUIRED)
+endif()
 include_directories(${ZLIB_INCLUDE_DIR})
 
 if(NOT WIN32)
