@@ -18,8 +18,7 @@
 # For conditions of distribution and use, see the disclaimer
 # and license in png.h
 
-cmake_minimum_required(VERSION 3.1)
-cmake_policy(VERSION 3.1)
+cmake_minimum_required (VERSION 3.13..3.18)
 
 project(libpng C ASM)
 enable_testing()
@@ -53,7 +52,7 @@ endif()
 # COMMAND LINE OPTIONS
 option(PNG_SHARED "Build shared lib" ON)
 option(PNG_STATIC "Build static lib" ON)
-option(PNG_TESTS  "Build libpng tests" ON)
+option(PNG_TESTS  "Build libpng tests" OFF)
 
 # Many more configuration options could be added here
 option(PNG_FRAMEWORK "Build OS X framework" OFF)
@@ -200,7 +199,7 @@ endif(PNG_HARDWARE_OPTIMIZATIONS)
 set(PNG_LIB_NAME png${PNGLIB_MAJOR}${PNGLIB_MINOR})
 
 # to distinguish between debug and release lib
-set(CMAKE_DEBUG_POSTFIX "d")
+# set(CMAKE_DEBUG_POSTFIX "d")
 
 include(CheckCSourceCompiles)
 option(ld-version-script "Enable linker version script" ON)
@@ -747,15 +746,15 @@ if(PNG_TESTS AND PNG_SHARED)
   png_add_test(NAME pngimage-full COMMAND pngimage OPTIONS --exhaustive --list-combos --log FILES ${PNGSUITE_PNGS})
 endif()
 
-if(PNG_SHARED)
-  add_executable(pngfix ${pngfix_sources})
-  target_link_libraries(pngfix png)
-  set(PNG_BIN_TARGETS pngfix)
-
-  add_executable(png-fix-itxt ${png_fix_itxt_sources})
-  target_link_libraries(png-fix-itxt ${ZLIB_LIBRARY} ${M_LIBRARY})
-  list(APPEND PNG_BIN_TARGETS png-fix-itxt)
-endif()
+# if(PNG_SHARED)
+#   add_executable(pngfix ${pngfix_sources})
+#   target_link_libraries(pngfix png)
+#   set(PNG_BIN_TARGETS pngfix)
+# 
+#   add_executable(png-fix-itxt ${png_fix_itxt_sources})
+#   target_link_libraries(png-fix-itxt ${ZLIB_LIBRARY} ${M_LIBRARY})
+#   list(APPEND PNG_BIN_TARGETS png-fix-itxt)
+# endif()
 
 # Set a variable with CMake code which:
 # Creates a symlink from src to dest (if possible) or alternatively
@@ -836,16 +835,16 @@ if(NOT WIN32 OR CYGWIN OR MINGW)
 endif()
 
 # SET UP LINKS
-if(PNG_SHARED)
-  set_target_properties(png PROPERTIES
-#   VERSION 16.${PNGLIB_RELEASE}.1.6.37
-    VERSION 16.${PNGLIB_RELEASE}.0
-    SOVERSION 16
-    CLEAN_DIRECT_OUTPUT 1)
-endif()
+#if(PNG_SHARED)
+#  set_target_properties(png PROPERTIES
+##   VERSION 16.${PNGLIB_RELEASE}.1.6.37
+#    VERSION 16.${PNGLIB_RELEASE}.0
+#    SOVERSION 16
+#    CLEAN_DIRECT_OUTPUT 1)
+#endif()
 
 # INSTALL
-if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
+if(NOT PNG_SKIP_INSTALL_LIBRARIES AND NOT PNG_SKIP_INSTALL_ALL)
   install(TARGETS ${PNG_LIB_TARGETS}
           EXPORT libpng
           RUNTIME DESTINATION bin
@@ -877,23 +876,23 @@ if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL)
   endif()
 endif()
 
-if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL)
+if(NOT PNG_SKIP_INSTALL_HEADERS AND NOT PNG_SKIP_INSTALL_ALL)
   install(FILES ${libpng_public_hdrs} DESTINATION include)
   install(FILES ${libpng_public_hdrs} DESTINATION include/${PNGLIB_NAME})
 endif()
-if(NOT SKIP_INSTALL_EXECUTABLES AND NOT SKIP_INSTALL_ALL)
+if(NOT PNG_SKIP_INSTALL_EXECUTABLES AND NOT PNG_SKIP_INSTALL_ALL)
   if(NOT WIN32 OR CYGWIN OR MINGW)
     install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/libpng-config DESTINATION bin)
     install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${PNGLIB_NAME}-config DESTINATION bin)
   endif()
 endif()
 
-if(NOT SKIP_INSTALL_PROGRAMS AND NOT SKIP_INSTALL_ALL)
+if(NOT PNG_SKIP_INSTALL_PROGRAMS AND NOT PNG_SKIP_INSTALL_ALL)
   install(TARGETS ${PNG_BIN_TARGETS}
           RUNTIME DESTINATION bin)
 endif()
 
-if(NOT SKIP_INSTALL_FILES AND NOT SKIP_INSTALL_ALL)
+if(NOT PNG_SKIP_INSTALL_FILES AND NOT PNG_SKIP_INSTALL_ALL)
   # Install man pages
   if(NOT PNG_MAN_DIR)
     set(PNG_MAN_DIR "share/man")
@@ -914,7 +913,7 @@ if(NOT SKIP_INSTALL_FILES AND NOT SKIP_INSTALL_ALL)
 endif()
 
 # Create an export file that CMake users can include() to import our targets.
-if(NOT SKIP_INSTALL_EXPORT AND NOT SKIP_INSTALL_ALL)
+if(NOT PNG_SKIP_INSTALL_EXPORT AND NOT PNG_SKIP_INSTALL_ALL)
   install(EXPORT libpng DESTINATION lib/libpng FILE lib${PNG_LIB_NAME}.cmake)
 endif()
 
