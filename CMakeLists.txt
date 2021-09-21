@@ -259,7 +259,6 @@ function(symbol_prefix)
     endif()
   endforeach()
 
-  message(STATUS "Symbol prefix: ${SYMBOL_PREFIX}")
   set(SYMBOL_PREFIX "${SYMBOL_PREFIX}" PARENT_SCOPE)
 endfunction()
 
