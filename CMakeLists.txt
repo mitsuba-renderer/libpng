@@ -647,11 +647,11 @@ if(PNG_SHARED)
   add_library(png SHARED ${libpng_sources})
   add_dependencies(png png_genfiles)
   list(APPEND PNG_LIBRARY_TARGETS png)
-  set_target_properties(png
-                        PROPERTIES OUTPUT_NAME "${PNG_SHARED_OUTPUT_NAME}"
-                                   DEBUG_POSTFIX "${PNG_DEBUG_POSTFIX}"
-                                   VERSION "${PNGLIB_SHARED_VERSION}"
-                                   SOVERSION "${PNGLIB_ABI_VERSION}")
+  #set_target_properties(png
+  #                      PROPERTIES OUTPUT_NAME "${PNG_SHARED_OUTPUT_NAME}"
+  #                                 DEBUG_POSTFIX "${PNG_DEBUG_POSTFIX}"
+  #                                 VERSION "${PNGLIB_SHARED_VERSION}"
+  #                                 SOVERSION "${PNGLIB_ABI_VERSION}")
   if(UNIX AND AWK)
     if(HAVE_LD_VERSION_SCRIPT)
       set_target_properties(png
